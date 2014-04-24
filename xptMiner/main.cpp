@@ -408,28 +408,7 @@ void *xptMiner_minerThread(void *arg)
 		// valid work data present, start processing workload
 		if(	workDataSource.algorithm == ALGORITHM_PROTOSHARES )
 		{
-			switch( minerSettings.protoshareMemoryMode )
-			{
-			case PROTOSHARE_MEM_512:
-				protoshares_process_512(&minerProtosharesBlock);
-				break;
-			case PROTOSHARE_MEM_256:
-				protoshares_process_256(&minerProtosharesBlock);
-				break;
-			case PROTOSHARE_MEM_128:
-				protoshares_process_128(&minerProtosharesBlock);
-				break;
-			case PROTOSHARE_MEM_32:
-				protoshares_process_32(&minerProtosharesBlock);
-				break;
-			case PROTOSHARE_MEM_8:
-				protoshares_process_8(&minerProtosharesBlock);
-				break;
-			default:
-				printf("Unknown memory mode\n");
-				Sleep(5000);
-				break;
-			}
+			protoshares_process_512(&minerProtosharesBlock);
 		}
 		else if( workDataSource.algorithm == ALGORITHM_SCRYPT )
 		{
@@ -544,7 +523,7 @@ xptClient_t* xptMiner_initateNewXptConnectionObject()
 	// up to 8 fee entries can be set
 	// the fee base is always calculated from 100% of the share value
 	// for example if you setup two fee entries with 3% and 2%, the total subtracted share value will be 5%
-	//xptClient_addDeveloperFeeEntry(xptClient, "Ptbi961RSBxRqNqWt4khoNDzZQExaVn7zL", getFeeFromDouble(0.5)); // 0.5% fee (jh00, for testing)
+	//xptClient_addDeveloperFeeEntry(xptClient, "PprCiobBUbUnmoVuaNePUdPXr1o8KnpBa4", getFeeFromDouble(0.5)); // 0.5% fee (jh00, for testing)
 	return xptClient;
 }
 
@@ -555,7 +534,6 @@ void xptMiner_xptQueryWorkLoop()
 	uint32 timerPrintDetails = getTimeMilliseconds() + 8000;
 	if(minerSettings.requestTarget.donationPercent > 0.1f)
 	{
-		//xptClient_addDeveloperFeeEntry(xptClient, "MK6n2VZZBpQrqpP9rtzsC9PRi5t1qsWuGc", getFeeFromDouble(minerSettings.requestTarget.donationPercent / 2.0)); 
 		xptClient_addDeveloperFeeEntry(xptClient, "PprCiobBUbUnmoVuaNePUdPXr1o8KnpBa4", getFeeFromDouble(minerSettings.requestTarget.donationPercent), false); // 0.5% fee (jh00, for testing)
 	}
 	while( true )
